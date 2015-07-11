@@ -1,0 +1,12 @@
+name: PvPKraft
+main: net.codekrafter.server.pvpkraft.main.PvPKraft
+version: 0.0.1
+softdepend: []
+depend: ["Essentials"]
+commands:
+    pvpkraft:
+          description: The Base PvPKraft Managment Command (THIS COMMAND CURRENTLY HAS NO USE)
+          usage: /pvpkraft <subcommands> (THIS COMMAND CURRENTLY HAS NO USE)
+    rankup:
+          description: Has You Rank-Up
+          usage: /rankup

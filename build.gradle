@@ -1,0 +1,143 @@
+/*
+ * Build Script For PvPKraft
+ */
+
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'maven'
+	id 'signing'
+	id 'com.github.johnrengelman.shadow' version '1.2.1'
+	//id "com.github.hierynomus.license" version "0.11.0"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+group = "net.codekrafter.server.pvpkraft.main"
+archivesBaseName = "PvPKraft"
+version = '1.0'
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'PvPKraft',
+		'Implementation-Version': version,
+		'Test-Entry': 'PASSED'
+	}
+}
+
+
+repositories {
+	mavenCentral()
+	maven {
+		name = "spigot-repo"
+		url = "https://hub.spigotmc.org/nexus/content/groups/public/"
+	}
+
+	maven {
+		name = "sonotype"
+		url = "https://oss.sonatype.org/content/repositories/snapshots/"
+	}
+
+	maven {
+		name = "sonotype-public"
+		url = "https://oss.sonatype.org/content/repositories/public/"
+	}
+
+	maven {
+		name = "gravitydev"
+		url = 'http://repo.gravitydevelopment.net'
+	}
+
+	maven {
+		name = "mcstats"
+		url = 'http://repo.mcstats.org/content/repositories/public'
+	}
+
+	maven {
+		name = "bukkit-repo"
+		url = "http://repo.bukkit.org/content/groups/public/"
+	}
+
+	maven {
+		name = "shadowvolt-repo"
+		url = "http://ci.shadowvolt.com/plugin/repository/everything/"
+	}
+
+	maven {
+		name = "caseif-repo"
+		url = "http://repo.caseif.net/content/groups/public/"
+	}
+	
+	maven {
+		name = "overcast-repo"
+		url = "http://repo.oc.tc/content/groups/public"
+	}
+	
+	maven {
+		name = "confuser-repo"
+		url = "http://ci.frostcast.net/plugin/repository/everything"
+	}
+	
+	maven {
+		name = "vault-repo"
+		url = "http://nexus.theyeticave.net/content/repositories/pub_releases"
+	}
+	
+	flatDir name: "lib", dirs: "${rootProject.projectDir}/lib"
+}
+
+dependencies {
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	compile name: "spigot-api", group: "org.spigotmc", version: "1.8.7-R0.1-SNAPSHOT"
+	compile name: "bungeecord-chat", group: "net.md-5", version: "1.8-SNAPSHOT"
+	compile name: "snakeyaml", group: "org.yaml", version: "1.16-SNAPSHOT"
+	compile name: "updater", group: "net.gravitydevelopment.updater", version: "2.1"
+	compile name: "metrics", group: "org.mcstats.bukkit", version: "R8-SNAPSHOT"
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	//compile name: "ProtocolLib", group: "com.comphenix.protocol", version: "3.6.3-SNAPSHOT"
+	compile group: "net.amigocraft.mglib", name: "mglib", version: "0.4.0"
+	compile group: "com.sk89q", name: "command-framework-bukkit", version: "0.6-SNAPSHOT"
+	compile group: "me.confuser", name: "BarAPI", version: "3.0"
+	compile group: "net.milkbowl.vault", name: "VaultAPI", version: "1.5"
+	compile name: "Essentials-2.x-SNAPSHOT"
+	testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test { systemProperties 'property': 'value' }
+
+uploadArchives {
+	repositories {
+
+		flatDir { dirs 'repos' }
+	}
+}
+
+shadowJar {
+	dependencies {
+		exclude(dependency ('org.bukkit:bukkit'))
+	}
+
+	exclude 'META-INF/*.DSA'
+	exclude 'META-INF/*.RSA'
+	exclude 'license/*'
+	
+	relocate 'org.mcstats', 'net.codekrafter.server.pvpkraft.main.mcstats'
+	relocate 'net.gravitydevelopment.updater', 'net.codekrafter.server.pvpkraft.main.updater'
+	relocate 'com.sk89q:command-framework-bukkit', 'net.codekrafter.server.pvpkraft.main.commands'
+}
+
+task push(type: Copy, dependsOn: 'build') {
+	from("build/libs") { include '*.jar' }
+	into "/Users/edds/Desktop/Servers/newServer/plugins"
+}
+
+task wrapper(type: Wrapper) { gradleVersion = "2.4" }
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
