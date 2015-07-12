@@ -28,6 +28,7 @@ public class PvPKraft extends JavaPlugin
 	public boolean onCommand(CommandSender s, Command cmd, String l,
 			String[] args)
 	{
+		getClassLoader();
 		if (s instanceof Player)
 		{
 		}
