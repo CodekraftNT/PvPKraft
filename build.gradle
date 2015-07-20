@@ -8,7 +8,7 @@ plugins {
 	id 'maven'
 	id 'signing'
 	id 'com.github.johnrengelman.shadow' version '1.2.1'
-	//id "com.github.hierynomus.license" version "0.11.0"
+	id "com.github.hierynomus.license" version "0.11.0"
 }
 
 sourceCompatibility = 1.8
@@ -66,22 +66,22 @@ repositories {
 		name = "caseif-repo"
 		url = "http://repo.caseif.net/content/groups/public/"
 	}
-	
+
 	maven {
 		name = "overcast-repo"
 		url = "http://repo.oc.tc/content/groups/public"
 	}
-	
+
 	maven {
 		name = "confuser-repo"
 		url = "http://ci.frostcast.net/plugin/repository/everything"
 	}
-	
+
 	maven {
 		name = "vault-repo"
 		url = "http://nexus.theyeticave.net/content/repositories/pub_releases"
 	}
-	
+
 	flatDir name: "lib", dirs: "${rootProject.projectDir}/lib"
 }
 
@@ -105,10 +105,21 @@ dependencies {
 test { systemProperties 'property': 'value' }
 
 uploadArchives {
-	repositories {
+	repositories { flatDir { dirs 'repos'
+		} }
+}
 
-		flatDir { dirs 'repos' }
-	}
+license {
+	header file('LICENSE')
+	excludes([
+		'**/*.MD',
+		'**/*.properties',
+		'**/*.yml'
+	])
+	sourceSets = project.sourceSets
+	ignoreFailures false
+	strictCheck true
+	mapping { java = 'SLASHSTAR_STYLE' }
 }
 
 shadowJar {
@@ -119,7 +130,7 @@ shadowJar {
 	exclude 'META-INF/*.DSA'
 	exclude 'META-INF/*.RSA'
 	exclude 'license/*'
-	
+
 	relocate 'org.mcstats', 'net.codekrafter.server.pvpkraft.main.mcstats'
 	relocate 'net.gravitydevelopment.updater', 'net.codekrafter.server.pvpkraft.main.updater'
 	relocate 'com.sk89q:command-framework-bukkit', 'net.codekrafter.server.pvpkraft.main.commands'

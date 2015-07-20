@@ -1,3 +1,6 @@
+/*
+ * Copyright 2015 codekrafter
+ */
 package net.codekrafter.server.pvpkraft.main;
 
 public class RankUp {
